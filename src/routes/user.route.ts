@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
-import { Body, Controller, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Response } from "express";
+import { Request, Response } from 'express';
 import { RegisterAuthDto } from "src/common/dto/auth-register.dto";
 
 
@@ -57,5 +57,26 @@ export class UserGatewayController {
         return data;
     }
 
+    @Get('me')
+    async getMe(@Req() req: Request, @Res() res: Response) {
+        try {
+            const accessToken = req.cookies['access_token'];
+            if (!accessToken) {
+                return res.status(401).json({ success: false, message: 'Unauthorized' });
+            }
 
+            const { data } = await this.httpService.axiosRef.get(
+                `${this.userServiceUrl}/me`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            return res.json(data);
+        } catch (error) {
+            return res.status(401).json({ success: false, message: 'Token expired or invalid' });
+        }
+    }
 }
