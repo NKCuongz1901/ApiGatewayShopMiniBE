@@ -4,7 +4,10 @@ import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  });
   const configService = app.get(ConfigService);
   const port = configService.get("PORT");
   const urlUserVice = configService.get<string>("USER_SERVICE_URL");
