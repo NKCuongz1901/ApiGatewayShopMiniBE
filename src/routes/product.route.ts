@@ -6,6 +6,7 @@ import { CreateProductDto } from "src/common/dto/create-product.dto";
 import { SearchProductDto } from "src/common/dto/search-product.dto";
 import { UpdateProductDto } from "src/common/dto/update-product.dto";
 
+
 @Controller('product')
 export class ProductGatewayController {
     private readonly productServiceUrl?: string;
