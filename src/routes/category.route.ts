@@ -1,8 +1,9 @@
 import { HttpService } from "@nestjs/axios";
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 import { CreateCategoryDto } from "src/common/dto/category-create.dto";
+import { UpdateProductDto } from "src/common/dto/update-product.dto";
 
 @Controller('category')
 export class CategoryGatewayController {
@@ -52,6 +53,32 @@ export class CategoryGatewayController {
 
         }
     }
+
+     @Delete(':id')
+        async deleteProduct(@Param('id') id: string) {
+            try {
+                const { data } = await lastValueFrom(
+                    this.httpService.delete(`${this.categoryServiceUrl}/${id}`),
+                );
+                return data;
+            } catch (error) {
+                throw new Error(error.response?.data || 'Error delete product');
+    
+            }
+        }
+    
+        @Put(':id')
+        async editProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+            try {
+                const { data } = await lastValueFrom(
+                    this.httpService.put(`${this.categoryServiceUrl}/${id}`, updateProductDto),
+                );
+                return data;
+            } catch (error) {
+                throw new HttpException(error.response?.data || 'Error update product', HttpStatus.BAD_REQUEST);
+            }
+        }
+
 
 
 }

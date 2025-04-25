@@ -1,8 +1,11 @@
 import { HttpService } from "@nestjs/axios";
-import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, Delete, Param, Patch } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Request, Response } from 'express';
 import { RegisterAuthDto } from "src/common/dto/auth-register.dto";
+import { CreateUserDto } from "src/common/dto/user-create.dto";
+import { UpdateUserDto } from "src/common/update-user.dto";
+
 
 
 @Controller('auth')
@@ -78,5 +81,69 @@ export class UserGatewayController {
         } catch (error) {
             return res.status(401).json({ success: false, message: 'Token expired or invalid' });
         }
+    }
+    // async getMe(@Req() req: Request, @Res() res: Response) {
+    //     // Lấy access token từ localStorage
+    //     const accessToken = req.cookies ? req.cookies['access_token'] : null;
+        
+    //     if (!accessToken) {
+    //         return res.status(401).json({ success: false, message: 'Unauthorized' });
+    //     }
+    
+    //     try {
+    //         // Gửi yêu cầu GET tới API với Authorization header
+    //         const { data } = await this.httpService.axiosRef.get(
+    //             `${this.userServiceUrl}/me`,{
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             },
+    //         });
+    
+    //         // Xử lý kết quả trả về từ API
+    //         return res.json(data);
+    //     } catch (error) {
+            
+    //         // Trường hợp token hết hạn hoặc không hợp lệ
+    //         if (error.response && error.response.status === 401) {
+    //             console.log('Token expired or invalid');
+    //         } else {
+    //             console.log('An error occurred while fetching data');
+    //         }
+    //     }
+    // }
+    
+
+    @Post('user')
+    async createUser(@Body() createUserDto: CreateUserDto) {
+        const { data } = await this.httpService.axiosRef.post(
+            `${this.userServiceUrl}/user`,
+            createUserDto,
+        );
+        return data;
+    }
+
+    @Get("user")
+    async getAllUsers() {
+        const { data } = await this.httpService.axiosRef.get(
+            `${this.userServiceUrl}/user`,
+        );
+        return data;
+    }
+
+    @Patch('user/:id')
+    async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+        const { data } = await this.httpService.axiosRef.patch(
+            `${this.userServiceUrl}/user/${id}`,
+            updateUserDto,
+        );
+        return data;
+    }
+
+    @Delete('user/:id')
+    async remove(@Param('id') id: string) {
+        const { data } = await this.httpService.axiosRef.delete(
+            `${this.userServiceUrl}/user/${id}`,
+        );
+        return data;
     }
 }

@@ -12,6 +12,7 @@ async function bootstrap() {
   const port = configService.get("PORT");
   const urlUserVice = configService.get<string>("USER_SERVICE_URL");
   app.setGlobalPrefix('api/v1');
+  app.use(cookieParser());
   await app.listen(port);
   console.log("Api-gateway is running in port: ", port);
   console.log("URL User Service: ", urlUserVice);
