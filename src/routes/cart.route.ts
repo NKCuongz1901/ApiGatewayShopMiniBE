@@ -34,7 +34,7 @@ export class CartGatewayController {
             );
             return data;
         } catch (error) {
-            throw new HttpException(error.response?.data || 'Error add to cart', HttpStatus.BAD_REQUEST);
+            throw new HttpException(error.response?.data || '   Error add to cart', HttpStatus.BAD_REQUEST);
 
         }
     }
