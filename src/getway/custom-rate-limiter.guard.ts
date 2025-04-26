@@ -24,8 +24,8 @@ export class CustomRateLimiterGuard implements CanActivate {
 
     this.rateLimiter = new RateLimiterRedis({
       storeClient: redis,
-      points: 10, // cho phép 10 request
-      duration: 60, // trong 60 giây
+      points: 100000, // cho phép 10 request
+      duration: 20, // trong 60 giây
       keyPrefix: 'rate-limit', // định danh cho Redis key
     });
   }

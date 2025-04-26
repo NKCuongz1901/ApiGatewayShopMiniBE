@@ -130,6 +130,15 @@ export class UserGatewayController {
         return data;
     }
 
+    @Get('user/:id')
+    async getUserById(@Param('id') id: string) {
+            
+            const { data } = await this.httpService.axiosRef.get(
+                `${this.userServiceUrl}/user/${id}`,
+            );
+            return data;
+        }
+
     @Patch('user/:id')
     async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         const { data } = await this.httpService.axiosRef.patch(
