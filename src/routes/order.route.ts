@@ -40,4 +40,18 @@ export class OrderGatewayController {
 
         }
     }
+
+    @Get()
+    async getAllOrder() {
+        try {
+            const { data } = await lastValueFrom(
+                this.httpService.get(`${this.orderServiceUrl}`),
+            );
+            return data;
+        } catch (error) {
+            throw new HttpException(error.response?.data || 'Error fetching order data', HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 }
