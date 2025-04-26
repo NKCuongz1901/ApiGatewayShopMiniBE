@@ -19,7 +19,11 @@ export class CategoryGatewayController {
     async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
         try {
             const { data } = await firstValueFrom(
-                this.httpService.post(`${this.categoryServiceUrl}`, createCategoryDto),
+                this.httpService.post(`${this.categoryServiceUrl}`, createCategoryDto,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -32,7 +36,11 @@ export class CategoryGatewayController {
     async findAllCategory() {
         try {
             const { data } = await firstValueFrom(
-                this.httpService.get(`${this.categoryServiceUrl}`),
+                this.httpService.get(`${this.categoryServiceUrl}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -44,7 +52,11 @@ export class CategoryGatewayController {
     async findCategoryById(@Param("id") id: string) {
         try {
             const { data } = await firstValueFrom(
-                this.httpService.get(`${this.categoryServiceUrl}/${id}`),
+                this.httpService.get(`${this.categoryServiceUrl}/${id}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
 
@@ -58,7 +70,11 @@ export class CategoryGatewayController {
         async deleteProduct(@Param('id') id: string) {
             try {
                 const { data } = await lastValueFrom(
-                    this.httpService.delete(`${this.categoryServiceUrl}/${id}`),
+                    this.httpService.delete(`${this.categoryServiceUrl}/${id}`,{
+                        headers: {
+                            'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                        },
+                    }),
                 );
                 return data;
             } catch (error) {
@@ -71,7 +87,11 @@ export class CategoryGatewayController {
         async editProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
             try {
                 const { data } = await lastValueFrom(
-                    this.httpService.put(`${this.categoryServiceUrl}/${id}`, updateProductDto),
+                    this.httpService.put(`${this.categoryServiceUrl}/${id}`, updateProductDto,{
+                        headers: {
+                            'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                        },
+                    }),
                 );
                 return data;
             } catch (error) {

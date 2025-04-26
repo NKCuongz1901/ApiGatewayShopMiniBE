@@ -17,7 +17,11 @@ export class CartGatewayController {
     async addToCart(@Body() body: { userId: string, productId: string, quantity: number }) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.post(`${this.cartServiceUrl}`, body),
+                this.httpService.post(`${this.cartServiceUrl}`, body,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -30,7 +34,11 @@ export class CartGatewayController {
     async getCart(@Param('userId') userId: string) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.get(`${this.cartServiceUrl}/${userId}`,)
+                this.httpService.get(`${this.cartServiceUrl}/${userId}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                })
             );
             return data;
         } catch (error) {

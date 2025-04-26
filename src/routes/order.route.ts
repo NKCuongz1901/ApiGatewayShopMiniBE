@@ -19,7 +19,11 @@ export class OrderGatewayController {
     async placeOrder(@Body() userId: string, @Body() createOrderDto: CreateOrderDto) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.post(`${this.orderServiceUrl}`, { userId, ...createOrderDto }),
+                this.httpService.post(`${this.orderServiceUrl}`, { userId, ...createOrderDto },{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -28,11 +32,15 @@ export class OrderGatewayController {
         }
     }
 
-    @Get('userId')
-    async getOrderByUserId(@Param('userId') userId: string) {
+    @Get(':id')
+    async getOrderByUserId(@Param('id') userId: string) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.get(`${this.orderServiceUrl}/${userId}`),
+                this.httpService.get(`${this.orderServiceUrl}/${userId}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -45,7 +53,11 @@ export class OrderGatewayController {
     async getAllOrder() {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.get(`${this.orderServiceUrl}`),
+                this.httpService.get(`${this.orderServiceUrl}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
