@@ -23,7 +23,12 @@ export class UserGatewayController {
         const { data } = await this.httpService.axiosRef.post(
             `${this.userServiceUrl}/login`,
             req.body,
-            { withCredentials: true },
+            { withCredentials: true,
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            } ,
+            
         );
 
         res.cookie('access_token', data.data.tokens.access_token, { httpOnly: true });
@@ -36,7 +41,11 @@ export class UserGatewayController {
     async register(@Body() registerAuthDto: RegisterAuthDto) {
         const { data } = await this.httpService.axiosRef.post(
             `${this.userServiceUrl}/register`,
-            registerAuthDto,
+            registerAuthDto,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            }
         );
         return data;
     }
@@ -45,7 +54,11 @@ export class UserGatewayController {
     async refreshToken(@Body('refreshToken') refreshToken: string) {
         const { data } = await this.httpService.axiosRef.post(
             `${this.userServiceUrl}/refresh`,
-            { refreshToken },
+            { refreshToken },{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            }
         );
         return data;
     }
@@ -55,7 +68,11 @@ export class UserGatewayController {
     async verifyAccount(@Body() body: { email: string; code: string }) {
         const { data } = await this.httpService.axiosRef.post(
             `${this.userServiceUrl}/verify`,
-            body,
+            body,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            }
         );
         return data;
     }
@@ -73,6 +90,8 @@ export class UserGatewayController {
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
+                         'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+
                     },
                 }
             );
@@ -117,7 +136,11 @@ export class UserGatewayController {
     async createUser(@Body() createUserDto: CreateUserDto) {
         const { data } = await this.httpService.axiosRef.post(
             `${this.userServiceUrl}/user`,
-            createUserDto,
+            createUserDto,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            }
         );
         return data;
     }
@@ -125,7 +148,11 @@ export class UserGatewayController {
     @Get("user")
     async getAllUsers() {
         const { data } = await this.httpService.axiosRef.get(
-            `${this.userServiceUrl}/user`,
+            `${this.userServiceUrl}/user`,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            },
         );
         return data;
     }
@@ -134,7 +161,11 @@ export class UserGatewayController {
     async getUserById(@Param('id') id: string) {
             
             const { data } = await this.httpService.axiosRef.get(
-                `${this.userServiceUrl}/user/${id}`,
+                `${this.userServiceUrl}/user/${id}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }
             );
             return data;
         }
@@ -143,7 +174,11 @@ export class UserGatewayController {
     async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         const { data } = await this.httpService.axiosRef.patch(
             `${this.userServiceUrl}/user/${id}`,
-            updateUserDto,
+            updateUserDto,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            }
         );
         return data;
     }
@@ -151,7 +186,11 @@ export class UserGatewayController {
     @Delete('user/:id')
     async remove(@Param('id') id: string) {
         const { data } = await this.httpService.axiosRef.delete(
-            `${this.userServiceUrl}/user/${id}`,
+            `${this.userServiceUrl}/user/${id}`,{
+                headers: {
+                    'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                },
+            },
         );
         return data;
     }

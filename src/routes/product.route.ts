@@ -21,7 +21,11 @@ export class ProductGatewayController {
     async createProduct(@Body() createProductDtO: CreateProductDto) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.post(`${this.productServiceUrl}`, createProductDtO),
+                this.httpService.post(`${this.productServiceUrl}`, createProductDtO,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -51,7 +55,11 @@ export class ProductGatewayController {
     async searchProduct(@Query() searchProductDto: SearchProductDto) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.get(`${this.productServiceUrl}/search`, { params: searchProductDto })
+                this.httpService.get(`${this.productServiceUrl}/search`, { params: searchProductDto ,
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                })
             );
             return data;
         } catch (error) {
@@ -63,7 +71,11 @@ export class ProductGatewayController {
     async getProductById(@Param('id') id: string) {
         try {
             const data = await lastValueFrom(
-                this.httpService.get(`${this.productServiceUrl}/${id}`),
+                this.httpService.get(`${this.productServiceUrl}/${id}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -76,7 +88,11 @@ export class ProductGatewayController {
     async deleteProduct(@Param('id') id: string) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.delete(`${this.productServiceUrl}/${id}`),
+                this.httpService.delete(`${this.productServiceUrl}/${id}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
@@ -89,7 +105,11 @@ export class ProductGatewayController {
     async editProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.put(`${this.productServiceUrl}/${id}`, updateProductDto),
+                this.httpService.put(`${this.productServiceUrl}/${id}`, updateProductDto,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {
