@@ -33,7 +33,11 @@ export class ProductGatewayController {
     async getAllProduct() {
         try {
             const { data } = await lastValueFrom(
-                this.httpService.get(`${this.productServiceUrl}`),
+                this.httpService.get(`${this.productServiceUrl}`,{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                },)
             );
             return data;
         } catch (error) {
@@ -42,6 +46,7 @@ export class ProductGatewayController {
         }
     }
 
+    
     @Get('search')
     async searchProduct(@Query() searchProductDto: SearchProductDto) {
         try {

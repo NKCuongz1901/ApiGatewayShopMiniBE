@@ -9,6 +9,8 @@ import { ProductGatewayController } from './routes/product.route';
 import { UploadGatewayController } from './routes/upload.route';
 import { CartGatewayController } from './routes/cart.route';
 import { OrderGatewayController } from './routes/order.route';
+import { GetwayModule } from './getway/getway.module';
+
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { OrderGatewayController } from './routes/order.route';
       envFilePath: '.env'
     }),
     HttpModule,
+    GetwayModule,
   ],
   controllers: [
     AppController,
