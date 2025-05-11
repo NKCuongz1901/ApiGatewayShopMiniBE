@@ -44,7 +44,7 @@ export class OrderGatewayController {
             );
             return data;
         } catch (error) {
-            throw new HttpException(error.response?.data || 'Error fetching order data', HttpStatus.BAD_REQUEST);
+            throw new HttpException(error.response?.data || 'Ereror fetching order data', HttpStatus.BAD_REQUEST);
 
         }
     }
