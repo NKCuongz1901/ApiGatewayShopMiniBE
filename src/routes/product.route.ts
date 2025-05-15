@@ -56,8 +56,11 @@ export class ProductGatewayController {
         try {
             const { data } = await lastValueFrom(
                 this.httpService.get(`${this.productServiceUrl}/search`, {
-                    params: searchProductDto
-                })
+                    params: searchProductDto,
+                     headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                },)
             );
             return data;
         } catch (error) {
@@ -68,8 +71,12 @@ export class ProductGatewayController {
     @Get(':id')
     async getProductById(@Param('id') id: string) {
         try {
-            const data = await lastValueFrom(
-                this.httpService.get(`${this.productServiceUrl}/${id}`),
+            const {data} = await lastValueFrom(
+                this.httpService.get(`${this.productServiceUrl}/${id}`, {
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
             );
             return data;
         } catch (error) {

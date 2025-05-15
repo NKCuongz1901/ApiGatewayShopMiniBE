@@ -13,4 +13,8 @@ export class CreateOrderDto {
     @IsNotEmpty({ message: "Payment method should not empty" })
     @IsString()
     paymentMethod: string;
+
+    @IsNotEmpty({ message: "Total price should not empty" })
+    @IsString()
+    productIds: string[];
 }
