@@ -10,6 +10,7 @@ import { UploadGatewayController } from './routes/upload.route';
 import { CartGatewayController } from './routes/cart.route';
 import { OrderGatewayController } from './routes/order.route';
 import { GetwayModule } from './getway/getway.module';
+import { PaymentGatewayController } from './routes/payment.route';
 
 
 @Module({
@@ -29,6 +30,8 @@ import { GetwayModule } from './getway/getway.module';
     UploadGatewayController,
     CartGatewayController,
     OrderGatewayController,
+    PaymentGatewayController
+    
   ],
   providers: [AppService],
 })
