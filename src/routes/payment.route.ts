@@ -45,4 +45,6 @@ export class PaymentGatewayController {
             throw new HttpException(error.response?.data || 'Error creating payment url', HttpStatus.BAD_REQUEST);
         }
     }
+
+  
 }
