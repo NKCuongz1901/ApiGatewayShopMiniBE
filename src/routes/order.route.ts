@@ -1,5 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { lastValueFrom } from "rxjs";
 import { CreateOrderDto } from "src/common/dto/create-order.dto";
@@ -65,5 +65,48 @@ export class OrderGatewayController {
 
         }
     }
+
+    @Put(':orderId')
+    async updateOrderStatus(@Param('orderId') orderId: string, @Body('status') status: string) {
+        try {
+            const { data } = await lastValueFrom(
+                this.httpService.put(`${this.orderServiceUrl}/${orderId}`, { status },{
+                    headers: {
+                        'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key', // thêm header
+                    },
+                }),
+            );
+            return data;
+        } catch (error) {
+            throw new HttpException(error.response?.data || 'Error updating order status', HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+//     @Put(':orderId')
+// async updateOrderStatus(
+//   @Param('orderId') orderId: string,
+//   @Body('status') status: string,
+// ) {
+//   try {
+//     const { data } = await lastValueFrom(
+//       this.httpService.put(
+//         `${this.orderServiceUrl}/${orderId}`,
+//         { status }, // gửi đúng object chứa status
+//         {
+//           headers: {
+//             'x-internal-api-key': process.env.INTERNAL_API_KEY || 'my-secret-key',
+//           },
+//         },
+//       ),
+//     );
+//     return data;
+//   } catch (error) {
+//     throw new HttpException(
+//       error.response?.data || 'Error updating order status',
+//       HttpStatus.BAD_REQUEST,
+//     );
+//   }
+// }
 
 }
